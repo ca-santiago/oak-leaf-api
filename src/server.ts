@@ -1,4 +1,4 @@
-const Hapi = require('@hapi/hapi');
+import Hapi from '@hapi/hapi';
 
 const init = async () => {
     const server = Hapi.server({
@@ -11,7 +11,6 @@ const init = async () => {
 };
 
 process.on('unhandledRejection', (err) => {
-
     console.log(err);
     process.exit(1);
 });
