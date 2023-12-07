@@ -21,6 +21,5 @@ export const CreateHabitController = (
   h: ResponseToolkit
 ) => {
   const { habitName, description } = req.payload;
-  console.log(req.auth.credentials);
   return req.payload;
 };

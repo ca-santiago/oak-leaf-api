@@ -4,6 +4,7 @@
   "description": "Main API service for oak leaf",
   "main": "dist/index.js",
   "scripts": {
+    "build": "tsc",
     "dev": "nodemon ./index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
