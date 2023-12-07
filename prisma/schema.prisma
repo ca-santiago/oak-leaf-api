@@ -37,6 +37,5 @@ model Completion {
   completionDate String
   completed      Boolean
 
-  @@unique([habitId])
   @@index([habitId])
 }

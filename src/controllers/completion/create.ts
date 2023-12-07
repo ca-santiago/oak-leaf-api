@@ -31,18 +31,16 @@ export const CreateCompletionController = async (
     },
   });
 
-  console.log({existingCompletion});
   if (existingCompletion) {
     const updatedCompletion = await prismaClient.completion.update({
       data: {
         ...existingCompletion,
-        completed: active
+        completed: active,
       },
       where: {
-        habitId,
+        id: existingCompletion.id,
       },
     });
-    console.log("Updated completion", updatedCompletion);
     return { data: updatedCompletion };
   }
 
@@ -53,5 +51,6 @@ export const CreateCompletionController = async (
       habitId,
     },
   });
+
   return { data: newCompletion };
 };
