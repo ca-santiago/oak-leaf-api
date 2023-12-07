@@ -34,8 +34,9 @@ model Completion {
   id             String   @id @default(uuid())
   habit          Habit    @relation(fields: [habitId], references: [id])
   habitId        String
-  completionDate DateTime
+  completionDate String
   completed      Boolean
 
+  @@unique([habitId])
   @@index([habitId])
 }
