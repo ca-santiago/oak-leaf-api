@@ -1,11 +1,41 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Profile {
+  id            String   @id @default(uuid())
+  userId        String
+  preferredName String?
+  descrition    String?
+  imageUri      String?
+  updatedAt     DateTime @default(now())
+}
+
+model Habit {
+  id          String       @id @default(uuid())
+  userId      String
+  habitName   String
+  description String?
+  createdAt   DateTime     @default(now())
+  // Other fields related to your habit can be added here
+  completions Completion[]
+
+  @@index([userId])
+  @@index([id])
+}
+
+model Completion {
+  id             String   @id @default(uuid())
+  habit          Habit    @relation(fields: [habitId], references: [id])
+  habitId        String
+  completionDate DateTime
+  completed      Boolean
+
+  @@index([habitId])
 }
