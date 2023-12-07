@@ -1,6 +1,7 @@
 import { ReqRef, ResponseToolkit } from "@hapi/hapi";
 import Joi from "joi";
 import { ServerRequest } from "../../core/types";
+import { prismaClient } from "../../services/prisma/client";
 
 interface CreateHabitPayload {
   habitName: string;
@@ -16,10 +17,20 @@ type CreateHabitArgs = ReqRef & {
   Payload: CreateHabitPayload;
 };
 
-export const CreateHabitController = (
+export const CreateHabitController = async (
   req: ServerRequest<CreateHabitArgs>,
   h: ResponseToolkit
 ) => {
   const { habitName, description } = req.payload;
-  return req.payload;
+  const userId = req.auth.credentials.userId;
+  const newHabit = await prismaClient.habit.create({
+    data: {
+      habitName,
+      userId,
+      description,
+    },
+  });
+  return {
+    data: newHabit,
+  };
 };
