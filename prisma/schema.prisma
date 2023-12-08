@@ -38,4 +38,5 @@ model Completion {
   completed      Boolean
 
   @@index([habitId])
+  @@index([completionDate, habitId])
 }
