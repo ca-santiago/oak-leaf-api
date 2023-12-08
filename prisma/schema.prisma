@@ -25,9 +25,24 @@ model Habit {
   createdAt   DateTime     @default(now())
   // Other fields related to your habit can be added here
   completions Completion[]
+  //  ["2023-12-01:2023-12-04", "2023-12-11:2023-12-12"]
+  incidences  Incidence[]
 
   @@index([userId])
   @@index([id])
+}
+
+model Incidence {
+  id         String   @id @default(uuid())
+  habit      Habit    @relation(fields: [habitId], references: [id])
+  createdAt  DateTime
+  habitId    String
+  // Serealized from Code
+  dateRanges String
+  // Segment db records per year
+  yearRange  String
+
+  @@index([habitId, yearRange])
 }
 
 model Completion {
@@ -36,8 +51,12 @@ model Completion {
   habitId        String
   completionDate DateTime
   completed      Boolean
+  // // Yes
+  // endDate        DateTime
+  // startDate      DateTime
 
   @@index([habitId])
-  // @@index([completionDate, habitId])
+  // @@index([startDate, endDate])
   @@index([completionDate])
+  @@index([completionDate, habitId])
 }

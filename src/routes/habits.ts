@@ -4,7 +4,11 @@ import {
   createHabitSchema,
 } from "../controllers/habits/create";
 import { failActionHandler } from "../helper/validation";
-import { GetHabitsByUserIdController } from "../controllers/habits/getByUserId";
+import {
+  GetHabitsByUserIdController,
+  GetHabitsByUserIdControllerV2,
+  getHabitsByUserIdControllerV2Schema,
+} from "../controllers/habits/getByUserId";
 
 export const HabitsRouter: ServerRoute[] = [
   {
@@ -14,6 +18,18 @@ export const HabitsRouter: ServerRoute[] = [
       auth: "auth0",
     },
     handler: GetHabitsByUserIdController,
+  },
+  {
+    method: "GET",
+    path: "/habits/{yearRange}",
+    options: {
+      auth: "auth0",
+      validate: {
+        params: getHabitsByUserIdControllerV2Schema,
+        failAction: failActionHandler,
+      },
+    },
+    handler: GetHabitsByUserIdControllerV2,
   },
   {
     method: "POST",
