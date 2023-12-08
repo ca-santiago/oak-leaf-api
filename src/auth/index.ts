@@ -1,4 +1,4 @@
-import { AuthCredentials, Server } from "@hapi/hapi";
+import { Server } from "@hapi/hapi";
 import jwksRsa from "jwks-rsa";
 import { JwtValidateReturn, JwtDecoded } from "../core/types";
 
@@ -23,6 +23,9 @@ export const loadAuth = (server: Server) => {
     verifyOptions: {
       audience: process.env.AUTH0_AUDIENCE,
       algorithms: ["RS256"],
+    },
+    errorFn(err: any) {
+      console.log(err);
     },
   });
   return server;
