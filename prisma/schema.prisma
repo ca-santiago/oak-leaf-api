@@ -35,10 +35,10 @@ model Habit {
 model Incidence {
   id         String   @id @default(uuid())
   habit      Habit    @relation(fields: [habitId], references: [id])
-  createdAt  DateTime
+  createdAt  DateTime @default(now())
   habitId    String
   // Serealized from Code
-  dateRanges String
+  dateRanges String @db.LongText
   // Segment db records per year
   yearRange  String
 
