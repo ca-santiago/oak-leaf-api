@@ -6,19 +6,10 @@ import {
 import { failActionHandler } from "../helper/validation";
 import {
   GetHabitsByUserIdController,
-  GetHabitsByUserIdControllerV2,
   getHabitsByUserIdControllerV2Schema,
 } from "../controllers/habits/getByUserId";
 
 export const HabitsRouter: ServerRoute[] = [
-  {
-    method: "GET",
-    path: "/habits",
-    options: {
-      auth: "auth0",
-    },
-    handler: GetHabitsByUserIdController,
-  },
   {
     method: "GET",
     path: "/habits/{yearRange}",
@@ -29,7 +20,7 @@ export const HabitsRouter: ServerRoute[] = [
         failAction: failActionHandler,
       },
     },
-    handler: GetHabitsByUserIdControllerV2,
+    handler: GetHabitsByUserIdController,
   },
   {
     method: "POST",
