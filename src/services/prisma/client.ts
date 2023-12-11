@@ -4,6 +4,6 @@ const devOptions = {
   log: ["query", "info", "error"],
 };
 
-const options = process.env.ENV === "pro" ? {} : devOptions;
+const options = process.env.ENV === "prod" ? {} : devOptions;
 
 export const prismaClient = new PrismaClient(options);
