@@ -36,6 +36,18 @@ export const CreateIncidenceController = async (
 
   if (!exists) return forbidden();
 
+  const existingIncidence = await prismaClient.incidence.findFirst({
+    where: {
+      habitId,
+      yearRange,
+    },
+  });
+
+  if (existingIncidence)
+    return {
+      data: existingIncidence,
+    };
+
   const newIncidence = await prismaClient.incidence.create({
     data: {
       dateRanges,

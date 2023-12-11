@@ -10,7 +10,7 @@ import {
   updateIncidenceSchema,
 } from "../controllers/incidence/update";
 import {
-  GetIncidenceController,
+  GetIncidenceByYearController,
   getIncidenceParamsSchema,
 } from "../controllers/incidence/getByYear";
 
@@ -42,8 +42,19 @@ export const getIncidencesRoutes = (basePath: string): ServerRoute[] => {
     },
     {
       method: "GET",
-      path: basePath + "/{incidenceId}",
-      handler: GetIncidenceController,
+      path: basePath + "/{id}",
+      handler: GetIncidenceByYearController,
+      options: {
+        auth: "auth0",
+        validate: {
+          params: getIncidenceParamsSchema,
+        },
+      },
+    },
+    {
+      method: "GET",
+      path: basePath + "/{yearRange}/habit/{habitId}",
+      handler: GetIncidenceByYearController,
       options: {
         auth: "auth0",
         validate: {

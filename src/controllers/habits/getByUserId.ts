@@ -7,8 +7,6 @@ export const GetHabitsByUserIdController = async (
   req: ServerRequest<any>,
   h: ResponseToolkit
 ) => {
-  // TODO: casantiago 7-12-2023
-  // const { start, end } = req.query;
   const userId = req.auth.credentials.userId;
   const lte = new Date(Date.now());
   const gte = new Date(lte);
@@ -54,8 +52,7 @@ export const GetHabitsByUserIdControllerV2 = async (
       incidences: {
         where: {
           yearRange,
-        },
-        take: 1,
+        }
       },
     },
   });
