@@ -5,29 +5,26 @@ import { prismaClient } from "../../services/prisma/client";
 import { notFound } from "@hapi/boom";
 
 interface GetIncidenceParams {
-  habitId: string;
-  yearRange: string;
+  id: string;
 }
 
 export const getIncidenceParamsSchema = Joi.object<GetIncidenceParams, true>({
-  habitId: Joi.string().required(),
-  yearRange: Joi.string().required(),
+  id: Joi.string().required(),
 });
 
 type GetIncidenceArgs = ReqRef & {
   Params: GetIncidenceParams;
 };
 
-export const GetIncidenceByYearController = async (
+export const GetIncidenceByIdController = async (
   req: ServerRequest<GetIncidenceArgs>,
   h: ResponseToolkit
 ) => {
-  const { habitId, yearRange } = req.params;
+  const { id } = req.params;
 
-  const result = await prismaClient.incidence.findFirst({
+  const result = await prismaClient.incidence.findUnique({
     where: {
-      habitId,
-      yearRange,
+      id,
     },
   });
 
