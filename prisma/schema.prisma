@@ -18,12 +18,15 @@ model Profile {
 }
 
 model Habit {
-  id          String       @id @default(uuid())
+  id          String      @id @default(uuid())
   userId      String
   habitName   String
   description String?
-  createdAt   DateTime     @default(now())
+  createdAt   DateTime    @default(now())
   incidences  Incidence[]
+
+  iconKey  String
+  colorKey String
 
   @@index([userId])
   @@index([id])
@@ -35,7 +38,7 @@ model Incidence {
   createdAt  DateTime @default(now())
   habitId    String
   // Serealized from Code
-  dateRanges String @db.LongText
+  dateRanges String   @db.LongText
   // Segment db records per year
   yearRange  String
 

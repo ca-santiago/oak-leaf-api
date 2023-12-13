@@ -21,6 +21,7 @@ export const loadAuth = (server: Server) => {
       };
     },
     verifyOptions: {
+      ignoreExpired: true,
       audience: process.env.AUTH0_AUDIENCE,
       algorithms: ["RS256"],
     },
