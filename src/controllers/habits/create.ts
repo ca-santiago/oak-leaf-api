@@ -5,11 +5,15 @@ import { prismaClient } from "../../services/prisma/client";
 
 interface CreateHabitPayload {
   habitName: string;
+  colorKey: string;
+  iconKey: string;
   description?: string;
 }
 
-export const createHabitSchema = Joi.object<CreateHabitPayload>({
+export const createHabitSchema = Joi.object<CreateHabitPayload, true>({
   habitName: Joi.string().required(),
+  colorKey: Joi.string().required(),
+  iconKey: Joi.string().required(),
   description: Joi.string().optional(),
 });
 
@@ -21,13 +25,15 @@ export const CreateHabitController = async (
   req: ServerRequest<CreateHabitArgs>,
   h: ResponseToolkit
 ) => {
-  const { habitName, description } = req.payload;
+  const { habitName, description, colorKey, iconKey } = req.payload;
   const userId = req.auth.credentials.userId;
   const newHabit = await prismaClient.habit.create({
     data: {
       habitName,
       userId,
       description,
+      colorKey,
+      iconKey,
     },
   });
   return {
