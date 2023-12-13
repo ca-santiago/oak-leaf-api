@@ -1,8 +1,33 @@
 import { Server } from "@hapi/hapi";
 import jwksRsa from "jwks-rsa";
 import { JwtValidateReturn, JwtDecoded } from "../core/types";
+import { unauthorized } from "@hapi/boom";
 
-export const loadAuth = (server: Server) => {
+export const loadAuth = async (server: Server) => {
+  server.auth.scheme("b64", (server: Server, options: any) => {
+    return {
+      authenticate(request, h) {
+        const authHeader = request.headers.authorization;
+
+        if (!authHeader) {
+          return unauthorized("Authorization header is missing");
+        }
+
+        const b64String = authHeader.split(" ")[1];
+
+        const [id, secret] = Buffer.from(b64String, "base64")
+          .toString("utf-8")
+          .split(":");
+
+        if (id === options?.clientId && secret === options?.clientSecret) {
+          return h.continue;
+        }
+
+        return unauthorized("Invalid credentials");
+      },
+    };
+  });
+
   server.auth.strategy("auth0", "jwt", {
     complete: true,
     headerKey: "authorization",
@@ -29,5 +54,11 @@ export const loadAuth = (server: Server) => {
       console.log(err);
     },
   });
+
+  server.auth.strategy("internal", "b64", {
+    clientId: process.env.SYSTEM_CLIENT_ID,
+    clientSecret: process.env.SYSTEM_CLIENT_SECRET,
+  });
+
   return server;
 };
