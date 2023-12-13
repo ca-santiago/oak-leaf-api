@@ -1,6 +1,7 @@
 import { Server } from "@hapi/hapi";
 import { HabitsRouter } from "./habits";
 import { getIncidencesRoutes } from "./incidences";
+import { VERSION } from "../core/constants";
 
 export const loadRoutes = (server: Server): Server => {
   server.route({
@@ -8,6 +9,15 @@ export const loadRoutes = (server: Server): Server => {
     path: "/ping",
     handler: (request, h) => {
       return "pong";
+    },
+  });
+  server.route({
+    method: "GET",
+    path: "/info",
+    handler: () => {
+      return {
+        version: VERSION,
+      };
     },
   });
   server.route(HabitsRouter);
