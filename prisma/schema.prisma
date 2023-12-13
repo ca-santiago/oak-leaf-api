@@ -17,6 +17,17 @@ model Profile {
   updatedAt     DateTime @default(now())
 }
 
+model Account {
+  id            String   @id @default(uuid())
+  externalId    String
+  preferredName String
+  contactEmail  String
+  imageUri      String
+  createdAt     DateTime @default(now())
+
+  @@unique([externalId])
+}
+
 model Habit {
   id          String      @id @default(uuid())
   userId      String
