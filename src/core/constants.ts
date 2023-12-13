@@ -1,3 +1,1 @@
-const pjson = require('../../package.json');
-
-export const VERSION = pjson.version;
+export const VERSION = process.env.npm_package_version
