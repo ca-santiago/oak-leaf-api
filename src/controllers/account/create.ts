@@ -3,19 +3,20 @@ import Joi from "joi";
 import { ServerRequest } from "../../core/types";
 import { prismaClient } from "../../services/prisma/client";
 import { conflict } from "@hapi/boom";
+import { PLANS } from "../../core/plans";
 
 interface CreateAccountPayload {
   externalId: string;
   email: string;
-  picture: string;
-  username: string;
+  username?: string;
+  picture?: string;
 }
 
 export const createAccountSchema = Joi.object<CreateAccountPayload, true>({
   externalId: Joi.string().required(),
   email: Joi.string().required(),
-  picture: Joi.string().required(),
-  username: Joi.string().required(),
+  picture: Joi.string().optional(),
+  username: Joi.string().optional(),
 });
 
 type CreateAccountArgs = ReqRef & {
@@ -36,12 +37,18 @@ export const CreateAccountController = async (
 
   if (exists) return conflict();
 
+  const endDate = new Date();
+  endDate.setFullYear(9999);
+
   const newAccount = await prismaClient.account.create({
     data: {
       contactEmail: email,
       externalId,
-      imageUri: picture,
-      preferredName: username,
+      imageUri: picture || undefined,
+      preferredName: username || undefined,
+      planType: PLANS.basic.type,
+      planInitDate: new Date(),
+      planEndDate: endDate,
     },
   });
 

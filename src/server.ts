@@ -18,7 +18,7 @@ const init = async () => {
   // PLUGINS
   await server.register(jwt);
 
-  loadAuth(server);
+  await loadAuth(server);
   loadRoutes(server);
 
   await server.start();

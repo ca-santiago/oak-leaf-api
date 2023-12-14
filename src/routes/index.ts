@@ -1,18 +1,11 @@
-import { Server } from "@hapi/hapi";
+import { Server, ServerRoute } from "@hapi/hapi";
 import { HabitsRouter } from "./habits";
 import { getIncidencesRoutes } from "./incidences";
 import { VERSION } from "../core/constants";
 import { getAccountRoutes } from "./account";
 
-export const loadRoutes = (server: Server): Server => {
-  server.route({
-    method: "GET",
-    path: "/ping",
-    handler: (request, h) => {
-      return "pong";
-    },
-  });
-  server.route({
+const metadataRoutes: ServerRoute[] = [
+  {
     method: "GET",
     path: "/info",
     handler: () => {
@@ -20,7 +13,18 @@ export const loadRoutes = (server: Server): Server => {
         version: VERSION,
       };
     },
-  });
+  },
+  {
+    method: "GET",
+    path: "/ping",
+    handler: () => {
+      return "pong";
+    },
+  },
+];
+
+export const loadRoutes = (server: Server): Server => {
+  server.route(metadataRoutes);
   server.route(getAccountRoutes("/accounts"));
   server.route(HabitsRouter);
   server.route(getIncidencesRoutes("/incidences"));

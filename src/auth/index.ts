@@ -2,8 +2,9 @@ import { Server } from "@hapi/hapi";
 import jwksRsa from "jwks-rsa";
 import { JwtValidateReturn, JwtDecoded } from "../core/types";
 import { unauthorized } from "@hapi/boom";
+import { prismaClient } from "../services/prisma/client";
 
-export const loadAuth = async (server: Server) => {
+const loadSchemas = (server: Server) => {
   server.auth.scheme("b64", (server: Server, options: any) => {
     return {
       authenticate(request, h) {
@@ -27,6 +28,10 @@ export const loadAuth = async (server: Server) => {
       },
     };
   });
+};
+
+export const loadAuth = async (server: Server) => {
+  loadSchemas(server);
 
   server.auth.strategy("auth0", "jwt", {
     complete: true,
@@ -36,12 +41,24 @@ export const loadAuth = async (server: Server) => {
       cache: true,
       jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
     }),
-    validate: (decoded: JwtDecoded): JwtValidateReturn => {
+    validate: async (decoded: JwtDecoded): Promise<JwtValidateReturn> => {
+      const found = await prismaClient.account.findFirst({
+        where: {
+          externalId: decoded.sub,
+        },
+      });
+
+      if (!found) {
+        return {
+          isValid: false,
+        };
+      }
+
       return {
         isValid: true,
         credentials: {
           decoded,
-          userId: decoded.sub,
+          userId: found.id,
         },
       };
     },
