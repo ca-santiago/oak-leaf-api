@@ -8,25 +8,30 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Profile {
-  id            String   @id @default(uuid())
-  userId        String
-  preferredName String?
-  descrition    String?
-  imageUri      String?
-  updatedAt     DateTime @default(now())
-}
-
 model Account {
   id            String   @id @default(uuid())
   externalId    String
-  preferredName String
+  preferredName String?
   contactEmail  String
-  imageUri      String
+  imageUri      String?
   createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+
+  planType     String
+  planEndDate    DateTime
+  planInitDate DateTime
 
   @@unique([externalId])
 }
+
+// model Plan {
+//   id        String   @id @default(uuid())
+//   account   Account  @relation(fields: [accountId], references: [id])
+//   accountId String   @unique
+//   updatedAt DateTime @default(now())
+//   type      String
+//   limit     DateTime
+// }
 
 model Habit {
   id          String      @id @default(uuid())
