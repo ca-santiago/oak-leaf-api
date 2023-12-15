@@ -1,11 +1,12 @@
 import { Server } from "@hapi/hapi";
 import jwksRsa from "jwks-rsa";
-import { JwtValidateReturn, JwtDecoded } from "../core/types";
+import { JwtValidateReturn, JwtDecoded, ServerRequest } from "../core/types";
 import { unauthorized } from "@hapi/boom";
 import { prismaClient } from "../services/prisma/client";
+import jwt from 'hapi-auth-jwt2';
 
 const loadSchemas = (server: Server) => {
-  server.auth.scheme("b64", (server: Server, options: any) => {
+  server.auth.scheme("b64", (_: Server, options: any) => {
     return {
       authenticate(request, h) {
         const authHeader = request.headers.authorization;
@@ -41,7 +42,8 @@ export const loadAuth = async (server: Server) => {
       cache: true,
       jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
     }),
-    validate: async (decoded: JwtDecoded): Promise<JwtValidateReturn> => {
+    validate: async (decoded: JwtDecoded, request: ServerRequest): Promise<JwtValidateReturn> => {
+      request.logger.info(['auth0', 'validate'], JSON.stringify({ decoded }));
       const found = await prismaClient.account.findFirst({
         where: {
           externalId: decoded.sub,
@@ -63,12 +65,11 @@ export const loadAuth = async (server: Server) => {
       };
     },
     verifyOptions: {
-      ignoreExpired: true,
       audience: process.env.AUTH0_AUDIENCE,
       algorithms: ["RS256"],
     },
-    errorFn(err: any) {
-      console.log(err);
+    errorFn(ctx: jwt.ErrorContext, request: ServerRequest) {
+      request.logger.error(['auth0', 'jwt'], ctx.message)
     },
   });
 

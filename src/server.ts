@@ -3,6 +3,7 @@ import Hapi from "@hapi/hapi";
 import jwt from "hapi-auth-jwt2";
 import { loadAuth } from "./auth";
 import { loadRoutes } from "./routes";
+import HapiPino from "hapi-pino";
 
 const init = async () => {
   const server = Hapi.server({
@@ -17,6 +18,7 @@ const init = async () => {
 
   // PLUGINS
   await server.register(jwt);
+  await server.register(HapiPino);
 
   await loadAuth(server);
   loadRoutes(server);
