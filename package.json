@@ -1,12 +1,12 @@
 {
   "name": "oak-leaf-api",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Main API service for oak leaf",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon ./index.ts | pino-pretty",
-    "start:dev": "NODE_ENV=production node ./dist/index.js | pino-pretty",
+    "dev": "nodemon ./index.ts | pino-pretty -C --singleLine",
+    "start:dev": "NODE_ENV=production node ./dist/index.js | pino-pretty --singleLine",
     "start": "NODE_ENV=production node ./dist/index.js"
   },
   "keywords": [],
