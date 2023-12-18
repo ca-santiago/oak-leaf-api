@@ -3,7 +3,6 @@ import Joi from "joi";
 import { ServerRequest } from "../../core/types";
 import { prismaClient } from "../../services/prisma/client";
 import { conflict } from "@hapi/boom";
-import { request } from "http";
 import { getPlanDetailsFromType } from "../../helper/plans";
 
 interface CreateHabitPayload {
