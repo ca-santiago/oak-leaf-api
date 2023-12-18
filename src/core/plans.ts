@@ -1,7 +1,7 @@
 
-type PlanType = "basic" | "advanced" | "total";
+export type PlanType = "basic" | "advanced" | "total";
 
-interface PlanDefinition {
+export interface PlanDefinition {
   type: PlanType;
   maxHabits: number;
   currency: string;
@@ -15,7 +15,7 @@ type Plans = {
 // Initial plan for everyone
 const Basic: PlanDefinition = {
   type: "basic",
-  maxHabits: 10,
+  maxHabits: 4,
   cost: 0,
   currency: "USD",
 };
