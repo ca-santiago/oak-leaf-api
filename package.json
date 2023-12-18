@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon ./index.ts | pino-pretty -C --singleLine",
-    "start:dev": "NODE_ENV=production node ./dist/index.js | pino-pretty --singleLine",
+    "start:dev": "NODE_ENV=stage node ./dist/index.js | pino-pretty --singleLine",
     "start": "NODE_ENV=production node ./dist/index.js"
   },
   "keywords": [],

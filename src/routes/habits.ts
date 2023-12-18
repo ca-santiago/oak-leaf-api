@@ -8,6 +8,7 @@ import {
   GetHabitsByUserIdController,
   getHabitsByUserIdControllerV2Schema,
 } from "../controllers/habits/getByUserId";
+import { deleteHabitController, deleteHabitParamsSchema } from "../controllers/habits/delete";
 
 export const HabitsRouter: ServerRoute[] = [
   {
@@ -34,4 +35,16 @@ export const HabitsRouter: ServerRoute[] = [
     },
     handler: CreateHabitController,
   },
+  {
+    method: "DELETE",
+    path: "/habits/{habitId}",
+    options: {
+      auth: "auth0",
+      validate: {
+        params: deleteHabitParamsSchema,
+        failAction: failActionHandler
+      }
+    },
+    handler: deleteHabitController
+  }
 ];
