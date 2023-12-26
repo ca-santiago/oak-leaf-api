@@ -5,13 +5,26 @@ import { loadAuth } from "./auth";
 import { loadRoutes } from "./routes";
 import HapiPino from "hapi-pino";
 
+const devOrigins: string[] = [];
+
+if (process.env.NODE_ENV === "stage") {
+  devOrigins.push("http://stage-habits.casantiago.com");
+  devOrigins.push("http://stage.habits.com:3000");
+} else if (process.env.NODE_ENV === "dev") {
+  devOrigins.push("http://localhost:3000");
+}
+
 const init = async () => {
   const server = Hapi.server({
     port: process.env.PORT,
     host: "localhost",
     routes: {
       cors: {
-        origin: ["*"]
+        origin: [
+          "https://habits.casantiago.com",
+          "https://habits-stage.casantiago.com",
+          ...devOrigins,
+        ],
       },
     },
   });
