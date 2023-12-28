@@ -18,7 +18,7 @@ model Account {
   updatedAt     DateTime @default(now())
 
   planType     String
-  planEndDate    DateTime
+  planEndDate  DateTime
   planInitDate DateTime
 
   @@unique([externalId])
@@ -32,6 +32,14 @@ model Account {
 //   type      String
 //   limit     DateTime
 // }
+
+model AccountInvite {
+  id           String   @id @default(uuid())
+  accountId    String
+  inviteCode   String
+  createdAt    DateTime @default(now())
+  usedByUserId String?
+}
 
 model Habit {
   id          String      @id @default(uuid())
