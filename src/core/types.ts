@@ -21,7 +21,7 @@ export interface ServerExtendedAuthCredentials extends ReqRef {
   AuthCredentialsExtra: JwtAuthCredentials;
 }
 
-export interface ServerRequest<T extends ReqRef = {} | any>
+export interface ServerRequest<T extends ReqRef = ReqRef>
   extends Request<T & ServerExtendedAuthCredentials> {}
 
 export interface JwtValidateReturn {

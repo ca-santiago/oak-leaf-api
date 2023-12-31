@@ -4,6 +4,7 @@ import {
   GetInviteByIdController,
   GetInviteByIdParamsSchema,
 } from "../controllers/plans/invites-getById";
+import { GetInviteByUserController } from "../controllers/plans/getByLoggedUser";
 
 export const getInvitesRoute = (basePath: string): ServerRoute[] => {
   return [
@@ -16,6 +17,14 @@ export const getInvitesRoute = (basePath: string): ServerRoute[] => {
           params: GetInviteByIdParamsSchema,
           failAction: failActionHandler,
         },
+      },
+    },
+    {
+      method: "GET",
+      path: basePath,
+      handler: GetInviteByUserController,
+      options: {
+        auth: "auth0",
       },
     },
   ];
