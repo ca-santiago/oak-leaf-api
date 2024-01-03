@@ -13,6 +13,7 @@ import {
   GetIncidenceByYearController,
   getIncidenceParamsSchema,
 } from "../controllers/incidence/getByYear";
+import { GetIncidenceByIdController, getIncidenceByIdParamsSchema } from "../controllers/incidence/getById";
 
 export const getIncidencesRoutes = (basePath: string): ServerRoute[] => {
   return [
@@ -43,11 +44,11 @@ export const getIncidencesRoutes = (basePath: string): ServerRoute[] => {
     {
       method: "GET",
       path: basePath + "/{id}",
-      handler: GetIncidenceByYearController,
+      handler: GetIncidenceByIdController,
       options: {
         auth: "auth0",
         validate: {
-          params: getIncidenceParamsSchema,
+          params: getIncidenceByIdParamsSchema,
         },
       },
     },

@@ -8,7 +8,7 @@ interface GetIncidenceParams {
   id: string;
 }
 
-export const getIncidenceParamsSchema = Joi.object<GetIncidenceParams, true>({
+export const getIncidenceByIdParamsSchema = Joi.object<GetIncidenceParams, true>({
   id: Joi.string().required(),
 });
 
