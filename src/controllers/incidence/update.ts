@@ -13,7 +13,7 @@ interface UpdateIncidenceParams {
 }
 
 export const updateIncidenceSchema = Joi.object<UpdateIncidencePayload, true>({
-  dateRanges: Joi.string().required(),
+  dateRanges: Joi.string().required().min(0),
   yearRange: Joi.string().required(),
 });
 
