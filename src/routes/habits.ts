@@ -4,10 +4,7 @@ import {
   createHabitSchema,
 } from "../controllers/habits/create";
 import { failActionHandler } from "../helper/validation";
-import {
-  GetHabitsByUserIdController,
-  getHabitsByUserIdControllerV2Schema,
-} from "../controllers/habits/getByUserId";
+import { GetHabitsByUserIdController } from "../controllers/habits/getByUserId";
 import {
   deleteHabitController,
   deleteHabitParamsSchema,
@@ -21,13 +18,9 @@ import {
 export const HabitsRouter: ServerRoute[] = [
   {
     method: "GET",
-    path: "/habits/{yearRange}",
+    path: "/habits",
     options: {
       auth: "auth0",
-      validate: {
-        params: getHabitsByUserIdControllerV2Schema,
-        failAction: failActionHandler,
-      },
     },
     handler: GetHabitsByUserIdController,
   },
