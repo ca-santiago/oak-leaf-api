@@ -60,8 +60,10 @@ export const CreateHabitController = async (
       description,
       colorKey,
       iconKey,
+      completions: ""
     },
   });
+
   return {
     data: newHabit,
   };

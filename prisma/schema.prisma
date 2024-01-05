@@ -47,24 +47,11 @@ model Habit {
   habitName   String
   description String?
   createdAt   DateTime    @default(now())
-  incidences  Incidence[]
+  completions String
 
   iconKey  String
   colorKey String
 
   @@index([userId])
   @@index([id])
-}
-
-model Incidence {
-  id         String   @id @default(uuid())
-  habit      Habit    @relation(fields: [habitId], references: [id])
-  createdAt  DateTime @default(now())
-  habitId    String
-  // Serealized from Code
-  dateRanges String   @db.LongText
-  // Segment db records per year
-  yearRange  String
-
-  @@index([habitId, yearRange])
 }

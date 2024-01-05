@@ -10,6 +10,7 @@ interface UpdateHabitPayload {
   colorKey?: string;
   iconKey?: string;
   description?: string;
+  completions?: string;
 }
 
 interface UpdateHabitParams {
@@ -21,6 +22,7 @@ export const updateHabitPayloadSchema = Joi.object<UpdateHabitPayload, true>({
   colorKey: Joi.string().optional(),
   iconKey: Joi.string().optional(),
   description: Joi.string().optional(),
+  completions: Joi.string().optional(),
 }).min(1);
 
 export const updateHabitParams = Joi.object<UpdateHabitParams, true>({
@@ -36,20 +38,20 @@ export const UpdateHabitController = async (
   req: ServerRequest<updateHabitArgs>,
   h: ResponseToolkit
 ) => {
-  const { habitName, description, colorKey, iconKey } = req.payload;
+  const { habitName, description, colorKey, iconKey, completions } = req.payload;
   const userId = req.auth.credentials.userId;
   const habitId = req.params.habitId;
 
-  const exists = await prismaClient.habit.findFirst({
+  const exists = await prismaClient.habit.findUnique({
     where: {
       userId,
       id: habitId,
     },
   });
 
-  if (!exists) {
-    return notFound();
-  }
+  if (!exists) return notFound();
+
+  // Need to add some validation to completions?
 
   const updated = await prismaClient.habit.update({
     where: {
@@ -61,6 +63,7 @@ export const UpdateHabitController = async (
       description,
       colorKey,
       iconKey,
+      completions
     },
   });
 
