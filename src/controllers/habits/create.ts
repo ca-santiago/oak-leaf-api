@@ -10,6 +10,7 @@ interface CreateHabitPayload {
   colorKey: string;
   iconKey: string;
   description?: string;
+  completions?: string;
 }
 
 export const createHabitSchema = Joi.object<CreateHabitPayload, true>({
@@ -17,6 +18,7 @@ export const createHabitSchema = Joi.object<CreateHabitPayload, true>({
   colorKey: Joi.string().required(),
   iconKey: Joi.string().required(),
   description: Joi.string().optional(),
+  completions: Joi.string().optional(),
 });
 
 type CreateHabitArgs = ReqRef & {
@@ -27,26 +29,32 @@ export const CreateHabitController = async (
   req: ServerRequest<CreateHabitArgs>,
   h: ResponseToolkit
 ) => {
-  const { habitName, description, colorKey, iconKey } = req.payload;
+  const { habitName, description, colorKey, iconKey, completions } =
+    req.payload;
   const userId = req.auth.credentials.userId;
 
   const accountSettings = await prismaClient.account.findUnique({
     where: {
-      id: userId
-    }
+      id: userId,
+    },
   });
 
   if (!accountSettings) {
-    req.logger.error(['createHabit', 'account'], `Missing account info for, user=${userId}`);
-    return conflict('Account is not fully configured, not account instance found');
+    req.logger.error(
+      ["createHabit", "account"],
+      `Missing account info for, user=${userId}`
+    );
+    return conflict(
+      "Account is not fully configured, not account instance found"
+    );
   }
 
   const planDetails = getPlanDetailsFromType(accountSettings.planType, req);
 
   const currentHabits = await prismaClient.habit.count({
     where: {
-      userId
-    }
+      userId,
+    },
   });
 
   if (currentHabits >= planDetails.maxHabits) {
@@ -60,7 +68,7 @@ export const CreateHabitController = async (
       description,
       colorKey,
       iconKey,
-      completions: ""
+      completions: completions ?? "",
     },
   });
 
