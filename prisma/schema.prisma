@@ -47,7 +47,7 @@ model Habit {
   habitName   String
   description String?
   createdAt   DateTime    @default(now())
-  completions String      @db.LongText()
+  completions String      @db.Text()
 
   iconKey  String
   colorKey String
