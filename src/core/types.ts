@@ -28,3 +28,10 @@ export interface JwtValidateReturn {
   isValid: boolean;
   credentials?: JwtAuthCredentials;
 }
+
+export type ItemStatus = "CREATED" | "ARCHIVED" | "CLOSED";
+export enum EItemStatus {
+  "CREATED",
+  "ARCHIVED",
+  "CLOSED",
+}

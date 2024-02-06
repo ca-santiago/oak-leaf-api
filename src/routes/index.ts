@@ -3,6 +3,7 @@ import { HabitsRouter } from "./habits";
 import { VERSION } from "../core/constants";
 import { getAccountRoutes } from "./account";
 import { getInvitesRoute } from "./plans";
+import { getTasksRoutes } from "./tasks";
 
 const metadataRoutes: ServerRoute[] = [
   {
@@ -27,6 +28,7 @@ export const loadRoutes = (server: Server): Server => {
   server.route(metadataRoutes);
   server.route(getAccountRoutes("/accounts"));
   server.route(getInvitesRoute("/invites"));
+  server.route(getTasksRoutes("/tasks"));
   server.route(HabitsRouter);
   return server;
 };

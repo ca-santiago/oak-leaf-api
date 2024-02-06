@@ -66,6 +66,7 @@ export const loadAuth = async (server: Server) => {
     },
     verifyOptions: {
       audience: process.env.AUTH0_AUDIENCE,
+      issuer: `${process.env.AUTH0_ISSUER_BASE_URL}/`,
       algorithms: ["RS256"],
     },
     errorFn(ctx: jwt.ErrorContext, request: ServerRequest) {

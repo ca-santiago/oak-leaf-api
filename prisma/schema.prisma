@@ -55,3 +55,17 @@ model Habit {
   @@index([userId])
   @@index([id])
 }
+
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  date        String
+  status      String
+
+  ownerId     String
+  habitId     String
+
+  createdAt   DateTime @default(now())
+  @@index([ownerId, date])
+}
