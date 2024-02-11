@@ -6,6 +6,7 @@ import {
 } from "../controllers/tasks/create";
 import { GetTaskController } from "../controllers/tasks/getByOwner";
 import { UpdateTaskController, updateTaskParams, updateTaskPayloadSchema } from "../controllers/tasks/update";
+import { GetTasksByHabitIdController, getTasksByHabitIdSchema } from "../controllers/tasks/getByHabitId";
 
 export const getTasksRoutes = (basePath: string): ServerRoute[] => {
   return [
@@ -15,6 +16,18 @@ export const getTasksRoutes = (basePath: string): ServerRoute[] => {
       handler: GetTaskController,
       options: {
         auth: "auth0",
+      },
+    },
+    {
+      method: "GET",
+      path: `${basePath}/habit/{habitId}`,
+      handler: GetTasksByHabitIdController,
+      options: {
+        auth: "auth0",
+        validate: {
+          params: getTasksByHabitIdSchema,
+          failAction: failActionHandler
+        }
       },
     },
     {
