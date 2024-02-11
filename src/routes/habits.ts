@@ -14,6 +14,10 @@ import {
   updateHabitParams,
   updateHabitPayloadSchema,
 } from "../controllers/habits/update";
+import {
+  getHabitByIdController,
+  getHabitByIdParamsSchema,
+} from "../controllers/habits/getById";
 
 export const HabitsRouter: ServerRoute[] = [
   {
@@ -35,6 +39,18 @@ export const HabitsRouter: ServerRoute[] = [
       },
     },
     handler: CreateHabitController,
+  },
+  {
+    method: "GET",
+    path: "/habits/{habitId}",
+    options: {
+      auth: "auth0",
+      validate: {
+        params: getHabitByIdParamsSchema,
+        failAction: failActionHandler,
+      },
+    },
+    handler: getHabitByIdController,
   },
   {
     method: "DELETE",

@@ -1,6 +1,6 @@
 {
   "name": "oak-leaf-api",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Main API service for oak leaf",
   "main": "dist/index.js",
   "scripts": {
